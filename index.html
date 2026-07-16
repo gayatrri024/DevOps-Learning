@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>User Profile</title>
+
+    <style>
+
+        body{
+            font-family: Arial;
+            background:#f4f4f4;
+        }
+
+        .container,
+        .container-edit{
+
+            width:400px;
+            margin:50px auto;
+            background:white;
+            padding:20px;
+            border-radius:10px;
+            text-align:center;
+            box-shadow:0 0 10px gray;
+
+        }
+
+        .container-edit{
+
+            display:none;
+
+        }
+
+        img{
+
+            width:150px;
+            border-radius:50%;
+
+        }
+
+        input{
+
+            width:90%;
+            padding:8px;
+
+        }
+
+        button{
+
+            padding:10px 20px;
+            cursor:pointer;
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>User Profile</h1>
+
+<img src="/profile-picture">
+
+<p>Name</p>
+
+<h3 id="name"></h3>
+
+<hr>
+
+<p>Email</p>
+
+<h3 id="email"></h3>
+
+<hr>
+
+<p>Interests</p>
+
+<h3 id="interests"></h3>
+
+<hr>
+
+<button onclick="editProfile()">Edit Profile</button>
+
+</div>
+
+<div class="container-edit">
+
+<h1>Edit Profile</h1>
+
+<img src="/profile-picture">
+
+<p>Name</p>
+
+<input id="input-name">
+
+<hr>
+
+<p>Email</p>
+
+<input id="input-email">
+
+<hr>
+
+<p>Interests</p>
+
+<input id="input-interests">
+
+<hr>
+
+<button onclick="saveProfile()">Save Profile</button>
+
+</div>
+
+<script>
+
+window.onload = function(){
+
+fetch("/get-profile")
+.then(res=>res.json())
+.then(data=>{
+
+document.getElementById("name").textContent=data.name;
+document.getElementById("email").textContent=data.email;
+document.getElementById("interests").textContent=data.interests;
+
+});
+
+}
+
+function editProfile(){
+
+document.querySelector(".container").style.display="none";
+document.querySelector(".container-edit").style.display="block";
+
+document.getElementById("input-name").value=document.getElementById("name").textContent;
+document.getElementById("input-email").value=document.getElementById("email").textContent;
+document.getElementById("input-interests").value=document.getElementById("interests").textContent;
+
+}
+
+function saveProfile(){
+
+const payload={
+
+name:document.getElementById("input-name").value,
+email:document.getElementById("input-email").value,
+interests:document.getElementById("input-interests").value
+
+};
+
+fetch("/update-profile",{
+
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify(payload)
+
+}).then(()=>{
+
+location.reload();
+
+});
+
+}
+
+</script>
+
+</body>
+
+</html>
