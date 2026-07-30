@@ -1,0 +1,73 @@
+steps to run this file on your machine 
+Step 1: Create a Deployment YAML file
+Step 2: Apply the YAML
+kubectl apply -f nginx-deployment.yaml
+
+Expected output:
+
+deployment.apps/nginx-deployment created
+-------------------------------------------
+Step 3: Verify the Deployment
+kubectl get deployments
+
+Example:
+
+NAME               READY   UP-TO-DATE   AVAILABLE   AGE
+nginx-deployment   1/1     1            1           10s
+------------------------------------------------
+Step 4: Verify the Pods
+kubectl get pods
+
+Example:
+
+NAME                                READY   STATUS    RESTARTS   AGE
+nginx-deployment-594cc45b78-pq5dx   1/1     Running   0          20s
+---------------------------------------------------
+Step 5: Describe the Deployment
+kubectl describe deployment nginx-deployment
+------------------------------------------------------
+Step 6: Describe the Pod
+
+First list the Pods:
+
+kubectl get pods
+--------------------------------------------------------
+Step 7: View the Logs
+kubectl logs <pod-name>
+kubectl logs nginx-deployment-594cc45b78-pq5dx
+
+-------------------------------------------------
+Step 8: Modify the YAML
+
+Open the file:
+vim nginx-deployment.yaml
+
+For example, change:
+replicas: 1
+to
+replicas: 3
+
+Save and exit.
+-----------------------------------------------
+Step 9: Apply the Updated YAML
+kubectl apply -f nginx-deployment.yaml
+-------------------------------------------------
+Step 10: Update the Image
+
+Edit the YAML:
+image: nginx:latest
+
+Change it to:
+image: nginx:1.27
+
+Apply it again:
+kubectl apply -f nginx-deployment.yaml
+
+Kubernetes performs a rolling update, replacing Pods one by one without downtime.
+---------------------------------------------------------------------------------
+Step 11: Delete the Deployment
+kubectl delete -f nginx-deployment.yaml
+
+Output:
+
+deployment.apps "nginx-deployment" deleted
