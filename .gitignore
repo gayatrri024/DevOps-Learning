@@ -1,0 +1,50 @@
+﻿# Node.js dependencies and logs
+node_modules/
+npm-debug.log*
+*.log
+
+# Environment variables and credentials
+.env
+.env.*
+!.env.example
+.aws/
+*credentials*
+*secret*
+
+# Terraform generated files and state
+**/.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+crash.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Local editor and operating-system files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Projects intentionally excluded from this repository for now
+devops-job-hunter/
+gayatri-portfolio/
+habot/
+hello_devops/
+Devops/
+DEVOPS_NOTES/
+Jenkins/
+Linux/
+Project/
+PulseRDS/
+
+# Additional protection before publishing
+*.tfvars
+!*.tfvars.example
+**/terraform.tfstate*
+**/*.tfplan
+**/*secret*.yaml
+**/*secret*.yml
+**/*.tfstate*

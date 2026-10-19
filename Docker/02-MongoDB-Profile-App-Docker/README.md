@@ -1,268 +1,193 @@
- # 🚀 Jenkins Installation & Docker Integration on AWS EC2
+# MongoDB Profile App using Docker
 
-A hands-on DevOps project demonstrating how to install Jenkins on an AWS EC2 Ubuntu instance and integrate Docker for container-based CI/CD pipelines.
+## Project Overview
 
----
+This project demonstrates how to build a simple **Node.js Profile Application** connected to a **MongoDB** database running inside Docker containers. The database is managed using **Mongo Express**, allowing profile information to be viewed and edited through a web interface.
 
-## 📌 Project Overview
-
-This project covers the complete setup of:
-
-- AWS EC2
-- Ubuntu Server
-- Java
-- Jenkins
-- Docker
-- Docker Pipeline Plugin
-
-After completing the setup, Jenkins is capable of executing Docker commands and building Docker-based pipelines.
+The application retrieves user details from MongoDB and displays them on a web page. Any changes made through Mongo Express are reflected in the application after refreshing the page.
 
 ---
 
-## 🎯 Objective
+## Tech Stack
 
-- Launch an AWS EC2 instance
-- Install Java
-- Install Jenkins
-- Configure AWS Security Groups
-- Access Jenkins via browser
-- Install Docker
-- Configure Docker permissions
-- Install Docker Pipeline Plugin
-- Prepare Jenkins for Docker-based CI/CD
+* Node.js
+* Express.js
+* MongoDB
+* Mongo Express
+* Docker
+* HTML
+* CSS
+* Git & GitHub
 
 ---
 
-# 🏗️ Architecture
+## Project Structure
 
 ```text
-               AWS Cloud
-                    │
-          Ubuntu EC2 Instance
-                    │
-             Install Java
-                    │
-            Install Jenkins
-                    │
-            Open Port 8080
-                    │
-         Access Jenkins UI
-                    │
-          Install Docker
-                    │
-     Add Jenkins to Docker Group
-                    │
-      Restart Docker & Jenkins
-                    │
-     Docker-based CI/CD Ready
+Docker/
+└── 02-MongoDB-Profile-App/
+    ├── index.html
+    ├── server.js
+    ├── package.json
+    ├── package-lock.json
+    ├── .gitignore
+    ├── README.md
+    └── node_modules/
 ```
 
 ---
 
-# ⚙️ Tech Stack
-
-| Technology | Purpose |
-|------------|---------|
-| AWS EC2 | Virtual Server |
-| Ubuntu | Operating System |
-| Java | Required by Jenkins |
-| Jenkins | CI/CD Server |
-| Docker | Containerization |
-| GitHub | Source Code Repository |
+## Prerequisites
+* Docker Desktop
 
 ---
 
-# 📖 Project Steps
+## Features
 
-## 1️⃣ Launch EC2 Instance
-
-- Created an Ubuntu EC2 instance
-- Connected using SSH
-
-```bash
-ssh -i masterkeyforANSIBLE.pem ubuntu@<Public-IP>
-```
+* Display user profile from MongoDB
+* Update profile information using Mongo Express
+* Dynamic data retrieval using Node.js
+* Dockerized MongoDB database
+* Web-based MongoDB administration
 
 ---
 
-## 2️⃣ Update Packages
+## Project Workflow
 
-```bash
-sudo apt update
-```
-
-Updates Ubuntu package information.
-
----
-
-## 3️⃣ Install Java
-
-```bash
-sudo apt install openjdk-25-jre-headless
-
-java --version
-```
-
-Jenkins requires Java to run.
-
----
-
-## 4️⃣ Install Jenkins
-
-Add Jenkins Repository
-
-```bash
-sudo wget -O /etc/apt/keyrings/jenkins-keyring.asc \
-https://pkg.jenkins.io/debian-stable/jenkins.io-2026.key
-```
-
-```bash
-echo "deb [signed-by=/etc/apt/keyrings/jenkins-keyring.asc]" \
-https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
-/etc/apt/sources.list.d/jenkins.list > /dev/null
-```
-
-Install Jenkins
-
-```bash
-sudo apt update
-sudo apt install jenkins
+```text
+Browser (localhost:3000)
+        │
+        ▼
+Node.js Application (Express Server)
+        │
+        ▼
+MongoDB Database (Docker Container)
+        ▲
+        │
+Mongo Express
 ```
 
 ---
 
-## 5️⃣ Verify Jenkins
+## Steps Performed
+
+### 1. Clone the Repository
 
 ```bash
-ps -ef | grep jenkins
+git clone <repository-url>
+cd Docker/02-MongoDB-Profile-App
 ```
 
-Verify the Jenkins service is running.
+### 2. Install Dependencies
 
----
+```bash
+npm install
+```
 
-## 6️⃣ Configure AWS Security Group
+### 3. Start MongoDB Container
+
+```bash
+docker run -d \
+--name mongodb \
+-p 27017:27017 \
+-e MONGO_INITDB_ROOT_USERNAME=admin \
+-e MONGO_INITDB_ROOT_PASSWORD=password \
+mongo
+```
+
+### 4. Start Mongo Express
+
+```bash
+docker run -d \
+--name mongo-express \
+-p 8081:8081 \
+-e ME_CONFIG_MONGODB_ADMINUSERNAME=admin \
+-e ME_CONFIG_MONGODB_ADMINPASSWORD=password \
+-e ME_CONFIG_MONGODB_SERVER=mongodb \
+--network mongo-network \
+mongo-express
+```
+
+> **Note:** Ensure both containers are connected to the same Docker network.
+
+### 5. Run the Node.js Application
+
+```bash
+node server.js
+```
 
 Open:
 
-- TCP
-- Port 8080
-
-This allows browser access to Jenkins.
-
----
-
-## 7️⃣ Unlock Jenkins
-
-```bash
-sudo cat /var/lib/jenkins/secrets/initialAdminPassword
 ```
-
-Copy the password into the Jenkins setup page.
-
----
-
-## 8️⃣ Install Docker
-
-```bash
-sudo apt install docker.io
+http://localhost:3000
 ```
 
 ---
 
-## 9️⃣ Configure Docker Permissions
+## Verify the Application
 
-```bash
-sudo usermod -aG docker jenkins
-sudo usermod -aG docker ubuntu
+1. Open Mongo Express.
 
-sudo systemctl restart docker
-sudo systemctl restart jenkins
 ```
+http://localhost:8081
+```
+
+2. Edit the profile document.
+
+3. Save the changes.
+
+4. Refresh the application.
+
+The updated profile information should now be displayed on the webpage.
 
 ---
 
-## 🔟 Install Docker Pipeline Plugin
+## Learning Outcomes
 
-Navigate to:
+Through this project, I learned how to:
 
-```
-Manage Jenkins
-    ↓
-Plugins
-    ↓
-Available Plugins
-    ↓
-Docker Pipeline
-```
-
-Install and restart Jenkins.
+* Run MongoDB inside Docker.
+* Connect a Node.js application to MongoDB.
+* Use Mongo Express to manage database records.
+* Store and retrieve data from MongoDB.
+* Understand communication between the frontend, backend, and database.
+* Work with Docker networking.
+* Manage project source code using Git and GitHub.
 
 ---
 
-# 📂 Final Environment
+## Future Improvements
 
-```
-AWS EC2
-   │
-Ubuntu
-   │
-Java
-   │
-Jenkins
-   │
-Docker
-   │
-Docker Pipeline Plugin
-   │
-Docker-based CI/CD Ready
-```
+* Docker Compose configuration
+* Persistent Docker volumes
+* CRUD operations (Create, Read, Update, Delete)
+* User authentication
+* Environment variables using `.env`
+* Responsive UI improvements
 
 ---
 
-# 💻 Important Commands
+## Screenshots
 
-```bash
-sudo apt update
+Add screenshots of:
 
-sudo apt install openjdk-25-jre-headless
+* Running MongoDB contain
 
-java --version
+er
+* Mongo Express dashboard
 
-sudo apt install jenkins
 
-jenkins --version
+* Docker Desktop containers
+* Terminal showing Node.js server
+* Profile application in the browser
 
-ps -ef | grep jenkins
 
-sudo cat /var/lib/jenkins/secrets/initialAdminPassword
-
-sudo apt install docker.io
-
-sudo usermod -aG docker jenkins
-
-sudo usermod -aG docker ubuntu
-
-sudo systemctl restart docker
-
-sudo systemctl restart jenkins
-```
-
+* Updated profile after editing in Mongo Express
+![alt text](image.png)
 ---
 
-# 📚 Key Learnings
-
-- Jenkins is a Java application.
-- AWS Security Groups control inbound traffic.
-- Jenkins uses port **8080** by default.
-- Docker must be installed separately.
-- Jenkins requires Docker permissions to execute Docker commands.
-- The Docker Pipeline Plugin enables Docker-based pipelines.
-
----
-
-## 👩‍💻 Author
+## Author
 
 **Gayatri Shinde**
 
-Aspiring DevOps Engineer | AWS | Docker | Jenkins | Linux | GitHub
+Learning DevOps through hands-on projects involving Docker, Git, GitHub, Linux, Jenkins, AWS, and Node.js.
