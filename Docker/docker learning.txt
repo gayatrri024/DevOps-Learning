@@ -1,0 +1,214 @@
+1. Run Your First Container
+Shell
+docker run hello-world
+
+Learn:
+
+Pulling images
+Running containers
+Understanding Docker Hub
+2. Run an Nginx Web Server
+Shell
+docker run -d -p 8080:80 nginx
+
+Then open:
+
+http://localhost:8080
+
+
+Learn:
+
+Port mapping
+Background containers
+Container lifecycle
+
+Useful commands:
+
+Shell
+docker ps
+docker stop <container-id>
+docker logs <container-id>
+3. Create Your Own HTML Website Container
+
+Create:
+
+index.html
+
+HTML
+<h1>Hello Docker!</h1>
+
+Run:
+
+Shell
+docker run -d \
+-p 8080:80 \
+-v $(pwd):/usr/share/nginx/html \
+nginx
+
+Learn:
+
+Volumes
+Bind mounts
+Live file changes
+4. Write Your First Dockerfile
+
+Create:
+
+Dockerfile
+
+Dockerfile
+FROM nginx
+COPY . /usr/share/nginx/html
+
+Build:
+
+Shell
+docker build -t mywebsite .
+
+Run:
+
+Shell
+docker run -p 8080:80 mywebsite
+
+Learn:
+
+Images
+Builds
+COPY instruction
+
+This is exactly the area the course is covering around your timestamp.
+
+5. Containerize a Python Application
+
+app.py
+
+Python
+print("Hello from Docker")
+
+Dockerfile
+
+Dockerfile
+FROM python:3.12
+ 
+WORKDIR /app
+ 
+COPY . .
+ 
+CMD ["python", "app.py"]
+
+Build:
+
+Shell
+docker build -t pyapp .
+docker run pyapp
+
+Learn:
+
+Base images
+CMD
+Workdir
+6. Containerize a Node.js API
+
+Build a small REST API:
+
+JavaScript
+const express = require('express');
+const app = express();
+ 
+app.get('/', (req,res)=>{
+res.send("Docker API");
+});
+ 
+app.listen(3000);
+
+Dockerize it and expose port 3000.
+
+Learn:
+
+Multi-file applications
+Dependencies
+Exposing application ports
+7. Docker Volumes Lab
+
+Run MySQL:
+
+Shell
+docker run -d \
+--name mysql \
+-e MYSQL_ROOT_PASSWORD=root \
+-v mysql-data:/var/lib/mysql \
+mysql
+
+Delete and recreate the container.
+
+Verify data still exists.
+
+Learn:
+
+Persistent storage
+Named volumes
+
+The course covers data persistence and volumes earlier in the curriculum.
+
+8. Docker Networking Lab
+
+Create a network:
+
+Shell
+docker network create mynet
+
+Run:
+
+Shell
+docker run -d --name db --network mynet mysql
+docker run -d --name app --network mynet nginx
+
+Learn:
+
+Container-to-container communication
+Custom Docker networks
+9. Docker Compose Mini Project
+
+Create:
+
+YAML
+services:
+web:
+image: nginx
+ports:
+- "8080:80"
+ 
+redis:
+image: redis
+
+Run:
+
+Shell
+docker compose up -d
+
+Learn:
+
+Multi-container applications
+Infrastructure as code
+
+The course has dedicated Docker Compose sections.
+
+10. Real Portfolio Project (Highly Recommended)
+
+Build and Dockerize:
+
+✅ Frontend (React/Angular/Vue)
+ ✅ Backend (Node.js/Python/.NET)
+ ✅ Database (PostgreSQL/MySQL)
+
+Create:
+
+Dockerfile for frontend
+Dockerfile for backend
+docker-compose.yml
+
+Then deploy to:
+
+AWS EC2
+Azure VM
+DigitalOcean
